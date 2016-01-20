@@ -13,7 +13,7 @@ public class AppointmentData {
 	public AppointmentData(String monthsDisplay, String url, Integer amount) {
 		this.monthsDisplay = monthsDisplay;
 		this.url = url;
-		this.amount = amount == null ? 0 : amount;
+		this.amount = amount;
 	}
 
 	public String getMonthsDisplay() {

@@ -1,5 +1,6 @@
 package de.admir.async;
 
+import de.admir.util.Constants;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,12 +28,15 @@ public class CheckAppointmentsTask implements Runnable {
 
 	@Override
 	public void run() {
+		Integer freeAppointmentsAmount = -1;
 		try {
-			Document doc = Jsoup.connect(url).timeout(14 * 1000).get();
-			freeAppointmentsMap.put(url, doc.select(SELECTOR).size());
-			LOG.info("Parsed URL_" + taskId + ", result: " + freeAppointmentsMap.get(url));
+			LOG.info("Task_"+ taskId + " fetching URL");
+			Document doc = Jsoup.connect(url).timeout(Constants.TIMEOUT * 1000).get();
+			freeAppointmentsAmount = doc.select(SELECTOR).size();
 		} catch (IOException e) {
-			LOG.error("Exception while connecting to url.", e);
+			LOG.error("ErrorLog:", e);
 		}
+		freeAppointmentsMap.put(url, freeAppointmentsAmount);
+		LOG.info("Task_"+ taskId + " result: " + freeAppointmentsAmount);
 	}
 }
